@@ -157,11 +157,13 @@
                   spec += res.data[i].spec[j].text+",";
                 }
               }
-              for (let k = 0; k < res.data[i].brand.length; k++) {
-                if (k === res.data[i].brand.length-1){
-                  brand += res.data[i].brand[k].text;
-                }else{
-                  brand += res.data[i].brand[k].text+",";
+              if (res.data[i].brand != null){
+                for (let k = 0; k < res.data[i].brand.length; k++) {
+                  if (k === res.data[i].brand.length-1){
+                    brand += res.data[i].brand[k].text;
+                  }else{
+                    brand += res.data[i].brand[k].text+",";
+                  }
                 }
               }
               let cust = eval(res.data[i].customAttributeItems);
@@ -197,30 +199,13 @@
         },
         //点击修改触发
         handleEdit(index,row){
+          //清空选中的值
           this.value2 = [];
           this.value1 = [];
           this.tempId = row.id;
           this.tempName = row.name;
-          let values = JSON.parse(row.brandIds);
-          for (let i = 0; i < values.length; i++) {
-            //选项中没有这个
-            if (this.brandOptions.indexOf(values[i]) === -1){
-              this.brandOptions.push(values[i]);
-            }else{
-              this.value1.splice(this.value1.indexOf(values[i]),1);
-            }
-          }
-          this.value1 = values;
-          values = JSON.parse(row.specIds);
-          for (let i = 0; i < values.length; i++) {
-            //选项中没有这个
-            if (this.specOptions.indexOf(values[i]) === -1){
-              this.specOptions.push(values[i]);
-            }else{
-              this.value2.splice(this.value2.indexOf(values[i]),1);
-            }
-          }
-          this.value2 = values;
+          this.value1 = JSON.parse(row.brandIds);
+          this.value2 = JSON.parse(row.specIds);
         },
         //点击关闭触发
         handleClose(done) {
