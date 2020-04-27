@@ -139,6 +139,7 @@
             tempName:""
           }
       },
+      //数据获取
       created() {
         this.$http.get('http://localhost:8082/template/getByLimit',{params:{
             pageSize: 5,
@@ -190,10 +191,14 @@
         });
       },
       methods:{
+        //多选选中触发
         handleSelectionChange(val) {
           this.multipleSelection = val;
         },
+        //点击修改触发
         handleEdit(index,row){
+          this.value2 = [];
+          this.value1 = [];
           this.tempId = row.id;
           this.tempName = row.name;
           let values = JSON.parse(row.brandIds);
@@ -217,6 +222,7 @@
           }
           this.value2 = values;
         },
+        //点击关闭触发
         handleClose(done) {
           this.$confirm('确认关闭？')
             .then(_ => {
@@ -224,10 +230,12 @@
             })
             .catch(_ => {});
         },
+        //分页触发
         handleCurrentChange(val){
           this.currentPage = val;
           this.getData();
         },
+        //数据格式化
         dataFormat(res){
           for (let i = 0; i < res.data.length; i++) {
             let spec = "";
@@ -267,6 +275,7 @@
           }
           this.tableData = res.data;
         },
+        //获取数据
         getData(){
           this.$http.get('http://localhost:8082/template/getByLimit',{params:{
               pageSize: this.pageSize,
@@ -279,6 +288,7 @@
             this.totalCount = res.data;
           });
         },
+        //新增模板
         addTemplate(){
           let brand = this.value1;
           let spec = this.value2;
@@ -297,9 +307,11 @@
             this.value2 = [];
           });
         },
+        //刷新按钮触发
         reload(){
           window.location.reload();
         },
+        //删除模板触发
         delTemplate(){
           if (this.multipleSelection == null){
             this.$message({message: '删除不得为空!', type: 'warning'});
@@ -320,6 +332,7 @@
             })
           }
         },
+        //搜索
         search(){
           if (this.inSearch == ""){
             this.getData();
@@ -335,6 +348,7 @@
             })
           }
         },
+        //修改触发
         updTemplate(){
           if (this.tempName === ""){
             this.$message({message: '模板名称不得为空!', type: 'warning'});
@@ -354,6 +368,7 @@
             })
           }
         },
+        //清除
         clear(){
           this.value1= [];
           this.value2=[];
