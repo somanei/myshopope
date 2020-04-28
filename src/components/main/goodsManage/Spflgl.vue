@@ -112,11 +112,13 @@
           .catch(_ => {
           });
       },
+      //分页
       handleCurrentChange(val) {
         this.currentPage = val;
         this.tbItemCatId = this.tableData[0].parentId;
         this.getData(this.tbItemCatId);
       },
+      //获取下一级
       getNext(row) {
         this.count+=1;
         if (this.count == 3){
@@ -131,6 +133,7 @@
         this.tbItemCatId = row.id;
         this.getData(this.tbItemCatId);
       },
+      //获取数据
       getData(id){
         this.$http.get("http://localhost:8082/tbItemCat/getLevel/"+id+"/"+((this.currentPage -1)*5)+"/5").then(res => {
           this.tableData = res.data;
@@ -139,17 +142,21 @@
           this.totalCount = res.data;
         });
       },
+      //点击一级面包屑触发
       showOne(){
         this.count = 1;
         this.getData(0);
         this.tbItemCatId = 0;
         this.tbItemCatName = "";
         this.threeName = "";
+        this.currentPage = 1;
       },
+      //二级触发
       showTwo(){
         this.count = 2;
         this.threeName = "";
         this.getData(this.twoId);
+        this.currentPage = 1;
       }
     }
   }
