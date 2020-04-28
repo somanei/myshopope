@@ -15,7 +15,7 @@
     </el-breadcrumb>
     <el-button-group>
       <el-button @click="dialogVisible = true">新建</el-button>
-      <el-button>删除</el-button>
+      <el-button @click="delCat()">删除</el-button>
       <el-button>刷新</el-button>
     </el-button-group>
 
@@ -168,7 +168,11 @@
       //分页
       handleCurrentChange(val) {
         this.currentPage = val;
-        this.tbItemCatId = this.tableData[0].parentId;
+        if (this.tableData == null || this.tableData[0] == null){
+          this.tbItemCatId = 0;
+        }else{
+          this.tbItemCatId = this.tableData[0].parentId;
+        }
         this.getData(this.tbItemCatId);
       },
       //获取下一级
@@ -202,14 +206,12 @@
         this.tbItemCatId = 0;
         this.tbItemCatName = "";
         this.threeName = "";
-        this.currentPage = 1;
       },
       //二级触发
       showTwo(){
         this.count = 2;
         this.threeName = "";
         this.getData(this.twoId);
-        this.currentPage = 1;
       },
       addFl(){
         // 父级id this.tbItemCatId
@@ -251,6 +253,25 @@
               this.$message({message: '修改失败!', type: 'warning'});
             }
             this.dialogVisibles = false;
+          })
+        }
+      },
+      delCat(){
+        if (this.multipleSelection == null ){
+          this.$message({message: '删除未勾选!', type: 'warning'});
+        }else{
+          let list = [];
+          for (let i = 0; i < this.multipleSelection.length; i++) {
+            list.push(this.multipleSelection[i].id);
+          }
+          this.$http.post('http://localhost:8082/tbItemCat/delCat',list).then(res=>{
+            if (res.data == 1){
+              this.$message({message: '删除成功!', type: 'success'});
+              this.getData(0);
+            }else{
+              this.$message({message: '删除失败!', type: 'warning'});
+            }
+            this.multipleSelection = [];
           })
         }
       }
