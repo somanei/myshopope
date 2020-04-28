@@ -6,8 +6,11 @@
         <span v-if="tbItemCatId === 0 || tbItemCatId === ''" @click="showOne()" style="font-weight: 900">顶级分类列表</span>
         <span v-else @click="showOne()">顶级分类列表</span>
       </el-breadcrumb-item>
-      <el-breadcrumb-item >
-
+      <el-breadcrumb-item v-if="tbItemCatName != ''">
+        <span  @click="showTwo()" style="font-weight: 900">{{tbItemCatName}}</span>
+      </el-breadcrumb-item>
+      <el-breadcrumb-item v-if="threeName != ''">
+        <span  style="font-weight: 900">{{threeName}}</span>
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-button-group>
@@ -29,7 +32,7 @@
 
       <el-table-column prop="address" label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="getNext(scope.row)">获取下级</el-button>
+          <el-button size="mini" v-show="count != 3" type="primary" @click="getNext(scope.row)">获取下级</el-button>
           <el-button class="b" size="mini" type="warning" @click="handleEdit(scope.$index, scope.row),dialogVisibles=true">修改
           </el-button>
         </template>
@@ -75,7 +78,15 @@
         // 默认每页显示的条数（可修改）
         multipleSelection: [],
         dialogVisibles: false,
-        tbItemCatId:""
+        //二级目录的id显示用
+        tbItemCatId:"",
+        //二级目录的名字
+        tbItemCatName:"",
+        count:1,
+        //三级目录的名字
+        threeName:"",
+        //二级目录的id
+        twoId:""
       }
     },
     created() {
@@ -107,6 +118,16 @@
         this.getData(this.tbItemCatId);
       },
       getNext(row) {
+        this.count+=1;
+        if (this.count == 3){
+          this.threeName = row.name;
+        }else if (this.count == 2){
+          //保存二级目录id为面包xian点击使用
+          this.twoId = row.id;
+          this.tbItemCatName = row.name;
+        }
+        this.currentPage = 1;
+        //修改一级目录id显示用
         this.tbItemCatId = row.id;
         this.getData(this.tbItemCatId);
       },
@@ -119,10 +140,16 @@
         });
       },
       showOne(){
+        this.count = 1;
         this.getData(0);
+        this.tbItemCatId = 0;
+        this.tbItemCatName = "";
+        this.threeName = "";
       },
       showTwo(){
-
+        this.count = 2;
+        this.threeName = "";
+        this.getData(this.twoId);
       }
     }
   }

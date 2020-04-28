@@ -20,6 +20,7 @@ import Sjsh from "./components/main/merchant/Sjsh";
 import Sjgl from "./components/main/merchant/Sjgl";
 import Gglxgl from "./components/main/advertising/Gglxgl";
 import acGggl from './components/main/advertising/Gggl';
+import ShopItem from "./components/main/goodsManage/ShopItem";
 
 
 var router = new VueRouter({ //注册组件
@@ -34,7 +35,8 @@ var router = new VueRouter({ //注册组件
     {path:"/sjsh",component:Sjsh},
     {path:"/sjgl",component:Sjgl},
     {path:"/gglxgl",component:Gglxgl},
-    {path:"/acGggl",component:acGggl}
+    {path:"/acGggl",component:acGggl},
+    {path:"/test",component:ShopItem}
   ]
 });
 
