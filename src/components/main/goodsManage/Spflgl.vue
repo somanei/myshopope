@@ -26,7 +26,7 @@
       </el-table-column>
       <el-table-column prop="name" label="分类名称">
       </el-table-column>
-      <el-table-column prop="typeId" label="类型模板ID">
+      <el-table-column prop="typeName" label="类型模板ID">
       </el-table-column>
 
 
@@ -51,13 +51,56 @@
     </template>
 
     <el-dialog title="新增" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-      品牌:
-      <el-input placeholder="请输入品牌" clearable></el-input>
-      首字母:
-      <el-input disabled placeholder="请输入首字母"></el-input>
+      <div>
+        <span>上级商品分类:</span>
+        <span style="margin-left: 6px;">
+          <span v-if="tbItemCatName != ''">{{tbItemCatName}}</span>
+          <span v-if="threeName != ''" class="el-icon-d-arrow-left">{{threeName}}</span>
+        </span>
+      </div>
+      分类名称:
+      <el-input placeholder="分类名称" v-model="inValue" style="width: 212px;margin: 10px 35px;" clearable></el-input>
+      <div>
+        类型模板:
+        <el-select v-model="value1" value-key="id" style="margin-left: 35px;" placeholder="类型模板">
+        <el-option
+          v-for="(item,key) in options"
+          :key="key"
+          :label="item.name"
+          :value="item">
+        </el-option>
+      </el-select>
+      </div>
       <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary">确 定</el-button>
+          <el-button type="primary" @click="addFl()">确 定</el-button>
+        </span>
+    </el-dialog>
+
+    <el-dialog title="修改" :visible.sync="dialogVisibles" width="30%" :before-close="handleClose">
+      <div>
+        <span>上级商品分类:</span>
+        <span style="margin-left: 6px;">
+          <span v-if="tbItemCatName != ''">{{tbItemCatName}}</span>
+          <span v-if="threeName != ''" class="el-icon-d-arrow-left">{{threeName}}</span>
+        </span>
+      </div>
+      分类名称:
+      <el-input placeholder="分类名称" v-model="inValue" style="width: 212px;margin: 10px 35px;" clearable></el-input>
+      <div>
+        类型模板:
+        <el-select v-model="value1" value-key="id" style="margin-left: 35px;" placeholder="类型模板">
+          <el-option
+            v-for="(item,key) in options"
+            :key="key"
+            :label="item.name"
+            :value="item">
+          </el-option>
+        </el-select>
+      </div>
+      <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisibles = false">取 消</el-button>
+          <el-button type="primary" @click="updCat()">确 定</el-button>
         </span>
     </el-dialog>
 
@@ -86,7 +129,11 @@
         //三级目录的名字
         threeName:"",
         //二级目录的id
-        twoId:""
+        twoId:"",
+        value1:{},
+        options:[],
+        inValue:"",
+        id:''
       }
     },
     created() {
@@ -97,12 +144,18 @@
       this.$http.get('http://localhost:8082/tbItemCat/getCount/0').then(res => {
         this.totalCount = res.data;
       });
+      this.$http.get('http://localhost:8082/template/getIdAndName').then(res=>{
+        this.options = res.data;
+      })
     },
     methods: {
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
       handleEdit(index, row) {
+        this.id = row.id;
+        this.inValue = row.name;
+        this.value1 = {id: row.typeId,name: row.typeName};
       },
       handleClose(done) {
         this.$confirm('确认关闭？')
@@ -157,6 +210,49 @@
         this.threeName = "";
         this.getData(this.twoId);
         this.currentPage = 1;
+      },
+      addFl(){
+        // 父级id this.tbItemCatId
+        if (this.inValue == ""){
+          this.$message({message: '分类名称不得为空!', type: 'warning'});
+        }else if (this.value1 == null ){
+          this.$message({message: '类型模板不得为空!', type: 'warning'});
+        }else{
+          this.$http.post('http://localhost:8082/tbItemCat/addTbItemCat',{
+            parentId:this.tbItemCatId,name:this.inValue,typeId:this.value1.id
+          }).then(res=>{
+            if (res.data == 1){
+              this.$message({message: '新增成功!', type: 'success'});
+              this.getData(this.tbItemCatId);
+              this.inValue = "";
+              this.value1 = {};
+            }else{
+              this.$message({message: '新增失败!', type: 'warning'});
+            }
+            this.dialogVisible = false;
+          })
+        }
+      },
+      updCat(){
+        if (this.inValue == ""){
+          this.$message({message: '分类名称不得为空!', type: 'warning'});
+        }else if (this.value1 == null ){
+          this.$message({message: '类型模板不得为空!', type: 'warning'});
+        }else{
+          this.$http.post('http://localhost:8082/tbItemCat/updCat',{
+            id:this.id,name:this.inValue,typeId:this.value1.id
+          }).then(res=>{
+            if (res.data == 1){
+              this.$message({message: '修改成功!', type: 'success'});
+              this.getData(this.tbItemCatId);
+              this.inValue = "";
+              this.value1 = {};
+            }else{
+              this.$message({message: '修改失败!', type: 'warning'});
+            }
+            this.dialogVisibles = false;
+          })
+        }
       }
     }
   }
