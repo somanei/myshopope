@@ -15,14 +15,14 @@
 
     </div>
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="date" type="selection" width="180"></el-table-column>
-      <el-table-column prop="name" label="商家ID" width="180"></el-table-column>
-      <el-table-column prop="address" label="公司名称"></el-table-column>
-      <el-table-column prop="address" label="店铺名称"></el-table-column>
-      <el-table-column prop="address" label="联系人姓名"></el-table-column>
-      <el-table-column prop="address" label="公司电话"></el-table-column>
-      <el-table-column prop="address" label="状态"></el-table-column>
-      <el-table-column prop="address" label="操作">
+      <el-table-column prop="id" type="selection" width="180"></el-table-column>
+      <el-table-column prop="sellerId" label="商家ID" width="180"></el-table-column>
+      <el-table-column prop="name" label="公司名称"></el-table-column>
+      <el-table-column prop="nickName" label="店铺名称"></el-table-column>
+      <el-table-column prop="linkmanName" label="联系人姓名"></el-table-column>
+      <el-table-column prop="telephone" label="公司电话"></el-table-column>
+      <el-table-column prop="status" label="状态"></el-table-column>
+      <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button class="b" size="mini" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
         </template>
@@ -37,12 +37,18 @@
       data(){
           return{
             input:"",
-            tableData:[]
+            tableData:[],
+            checked:""
           }
+      },
+      created() {
+        this.$http.get('http://localhost:8082/tbSeller/getAll').then(res=>{
+          this.tableData = res.data;
+        })
       },
       methods:{
         handleEdit(index,row){
-
+          console.log(row)
         }
       }
     }
