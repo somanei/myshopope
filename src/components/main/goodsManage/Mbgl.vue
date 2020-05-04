@@ -23,9 +23,6 @@
           </el-table-column>
           <el-table-column prop="spec" label="关联规格">
           </el-table-column>
-          <el-table-column prop="customAttributeItems" label="扩展属性">
-          </el-table-column>
-
           <el-table-column prop="address" label="操作">
             <template slot-scope="scope">
               <el-button class="b" size="mini" @click="handleEdit(scope.$index, scope.row),dialogVisibles=true">修改</el-button>

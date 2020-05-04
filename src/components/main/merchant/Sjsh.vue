@@ -89,7 +89,7 @@
       created() {
         this.$http.get('http://localhost:8082/tbSeller/findByStatus/0').then(res=>{
           this.tableData = res.data;
-        })
+        });
       },
       methods:{
         handleEdit(index,row){
