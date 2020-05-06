@@ -29,6 +29,49 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-dialog title="商家详情" :visible.sync="showBol" width="60%">
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="基本信息" name="one">
+          <el-table :data="tbSeller" style="width: 100%">
+            <el-table-column prop="name" label="公司名称" width="180"></el-table-column>
+            <el-table-column prop="mobile" label="公司手机" width="180"></el-table-column>
+            <el-table-column prop="telephone" label="公司电话"></el-table-column>
+            <el-table-column prop="addressDetail" label="公司详细地址"></el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="联系人" name="two">
+          <el-table :data="tbSeller" style="width: 100%">
+            <el-table-column prop="linkmanName" label="联系人姓名" width="180"></el-table-column>
+            <el-table-column prop="linkmanQq" label="联系人QQ" width="180"></el-table-column>
+            <el-table-column prop="linkmanMobile" label="联系人电话"></el-table-column>
+            <el-table-column prop="linkmanEmail" label="联系人EMAIL"></el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="证件" name="three">
+          <el-table :data="tbSeller" style="width: 100%">
+            <el-table-column prop="licenseNumber" label="营业执照号" width="180"></el-table-column>
+            <el-table-column prop="taxNumber" label="税务登记证号" width="180"></el-table-column>
+            <el-table-column prop="orgNumber" label="组织机构代码"></el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="法定代表人" name="four">
+          <el-table :data="tbSeller" style="width: 100%">
+            <el-table-column prop="legalPerson" label="法定代表人" width="180"></el-table-column>
+            <el-table-column prop="legalPersonCardId" label="法定代表人身份证" width="180"></el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="开户行" name="five">
+          <el-table :data="tbSeller" style="width: 100%">
+            <el-table-column prop="bankUser" label="开户行账号名称" width="180"></el-table-column>
+            <el-table-column prop="bankName" label="开户行" width="180"></el-table-column>
+            <el-table-column prop="bankAccount" label="银行账号"></el-table-column>
+          </el-table>
+        </el-tab-pane>
+      </el-tabs>
+
+    </el-dialog>
+
   </div>
 </template>
 
@@ -40,17 +83,25 @@
             tableData:[],
             radio: 4,
             name:"",
-            nickName:""
+            nickName:"",
+            tbSeller:[],
+            activeName:'one',
+            showBol:false
+
           }
       },
       created() {
-        this.$http.get('http://localhost:8082/tbSeller/getAll').then(res=>{
+        this.$http.get(this.Global.url_8082+'tbSeller/getAll').then(res=>{
           this.dataFormat(res)
         })
       },
       methods:{
+        handleClick(){
+
+        },
         handleEdit(index,row){
-          console.log(row)
+          this.tbSeller[0] = row;
+          this.showBol = true;
         },
         dataFormat(res){
             for (let i = 0; i < res.data.length; i++) {
@@ -68,12 +119,12 @@
         },
         search(){
           if (this.name !== '' || this.nickName !== ''){
-            this.$http.post('http://localhost:8082/tbSeller/findAllBySearch',
+            this.$http.post(this.Global.url_8082+'tbSeller/findAllBySearch',
               {name:this.name,nickName:this.nickName}).then(res=>{
                 this.dataFormat(res)
             })
           }else{
-            this.$http.get('http://localhost:8082/tbSeller/findByStatus/'+this.radio).then(res=>{
+            this.$http.get(this.Global.url_8082+'tbSeller/findByStatus/'+this.radio).then(res=>{
               this.dataFormat(res)
             })
           }

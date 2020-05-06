@@ -137,14 +137,14 @@
       }
     },
     created() {
-      this.$http.get('http://localhost:8082/tbItemCat/getLevel/0/0/5').then(res => {
+      this.$http.get(this.Global.url_8082+'tbItemCat/getLevel/0/0/5').then(res => {
         this.tableData = res.data;
         this.tbItemCatId = res.data[0].parentId;
       });
-      this.$http.get('http://localhost:8082/tbItemCat/getCount/0').then(res => {
+      this.$http.get(this.Global.url_8082+'tbItemCat/getCount/0').then(res => {
         this.totalCount = res.data;
       });
-      this.$http.get('http://localhost:8082/template/getIdAndName').then(res=>{
+      this.$http.get(this.Global.url_8082+'template/getIdAndName').then(res=>{
         this.options = res.data;
       })
     },
@@ -192,10 +192,10 @@
       },
       //获取数据
       getData(id){
-        this.$http.get("http://localhost:8082/tbItemCat/getLevel/"+id+"/"+((this.currentPage -1)*5)+"/5").then(res => {
+        this.$http.get(this.Global.url_8082+"tbItemCat/getLevel/"+id+"/"+((this.currentPage -1)*5)+"/5").then(res => {
           this.tableData = res.data;
         });
-        this.$http.get('http://localhost:8082/tbItemCat/getCount/'+id).then(res => {
+        this.$http.get(this.Global.url_8082+'tbItemCat/getCount/'+id).then(res => {
           this.totalCount = res.data;
         });
       },
@@ -220,7 +220,7 @@
         }else if (this.value1 == null ){
           this.$message({message: '类型模板不得为空!', type: 'warning'});
         }else{
-          this.$http.post('http://localhost:8082/tbItemCat/addTbItemCat',{
+          this.$http.post(this.Global.url_8082+'tbItemCat/addTbItemCat',{
             parentId:this.tbItemCatId,name:this.inValue,typeId:this.value1.id
           }).then(res=>{
             if (res.data == 1){
@@ -241,7 +241,7 @@
         }else if (this.value1 == null ){
           this.$message({message: '类型模板不得为空!', type: 'warning'});
         }else{
-          this.$http.post('http://localhost:8082/tbItemCat/updCat',{
+          this.$http.post(this.Global.url_8082+'tbItemCat/updCat',{
             id:this.id,name:this.inValue,typeId:this.value1.id
           }).then(res=>{
             if (res.data == 1){
@@ -264,7 +264,7 @@
           for (let i = 0; i < this.multipleSelection.length; i++) {
             list.push(this.multipleSelection[i].id);
           }
-          this.$http.post('http://localhost:8082/tbItemCat/delCat',list).then(res=>{
+          this.$http.post(this.Global.url_8082+'tbItemCat/delCat',list).then(res=>{
             if (res.data == 1){
               this.$message({message: '删除成功!', type: 'success'});
               this.getData(0);

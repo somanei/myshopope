@@ -138,7 +138,7 @@
       },
       //数据获取
       created() {
-        this.$http.get('http://localhost:8082/template/getByLimit',{params:{
+        this.$http.get(this.Global.url_8082+'template/getByLimit',{params:{
             pageSize: 5,
             // 显示第几页
             curPage: 0
@@ -179,13 +179,13 @@
             }
           this.tableData = res.data;
         });
-        this.$http.get('http://localhost:8082/template/getCount').then(res=>{
+        this.$http.get(this.Global.url_8082+'template/getCount').then(res=>{
           this.totalCount = res.data;
         });
-        this.$http.get('http://localhost:8082/template/getSpec').then(res=>{
+        this.$http.get(this.Global.url_8082+'template/getSpec').then(res=>{
           this.specOptions = res.data;
         });
-        this.$http.get('http://localhost:8082/template/getBrand').then(res=>{
+        this.$http.get(this.Global.url_8082+'template/getBrand').then(res=>{
           this.brandOptions = res.data;
         });
       },
@@ -259,14 +259,14 @@
         },
         //获取数据
         getData(){
-          this.$http.get('http://localhost:8082/template/getByLimit',{params:{
+          this.$http.get(this.Global.url_8082+'template/getByLimit',{params:{
               pageSize: this.pageSize,
               // 显示第几页
               curPage: (this.currentPage - 1) * this.pageSize
             }}).then(res=>{
             this.dataFormat(res);
           });
-          this.$http.get('http://localhost:8082/template/getCount').then(res=>{
+          this.$http.get(this.Global.url_8082+'template/getCount').then(res=>{
             this.totalCount = res.data;
           });
         },
@@ -274,7 +274,7 @@
         addTemplate(){
           let brand = this.value1;
           let spec = this.value2;
-          this.$http.post('http://localhost:8082/template/addTemplate',{
+          this.$http.post(this.Global.url_8082+'template/addTemplate',{
             name:this.addInput,spec:spec,brand:brand
           }).then(res=>{
             if (res.data == 1){
@@ -302,7 +302,7 @@
             for (let i = 0; i < this.multipleSelection.length; i++) {
               arr[i] = this.multipleSelection[i].id;
             }
-            this.$http.post('http://localhost:8082/template/delTemplate',
+            this.$http.post(this.Global.url_8082+'template/delTemplate',
               arr
             ).then(res=>{
               if (res.data == 1){
@@ -319,7 +319,7 @@
           if (this.inSearch == ""){
             this.getData();
           }else{
-            this.$http.get('http://localhost:8082/template/search',
+            this.$http.get(this.Global.url_8082+'template/search',
               {params:{val:this.inSearch}}).then(res=>{
                 if (res.data == null || res.data.length == 0){
                   this.$message({message: '搜索没有结果!', type: 'warning'});
@@ -337,7 +337,7 @@
           }else if (this.value2 == null || this.value1 == null){
             this.$message({message: '品牌规格不得为空!', type: 'warning'});
           }else{
-            this.$http.post('http://localhost:8082/template/updTemplate',{
+            this.$http.post(this.Global.url_8082+'template/updTemplate',{
               id:this.tempId,name:this.tempName,specIds:JSON.stringify(this.value2),brandIds:JSON.stringify(this.value1)
             }).then(res=>{
               if (res.data == 1){

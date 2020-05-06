@@ -87,7 +87,7 @@
         }
       },
       created() {
-        this.$http.get('http://localhost:8082/tbSeller/findByStatus/0').then(res=>{
+        this.$http.get(this.Global.url_8082+'tbSeller/findByStatus/0').then(res=>{
           this.tableData = res.data;
         });
       },
@@ -102,12 +102,16 @@
         updStatus(){
           console.log(this.status);
           this.tbSeller[0].status = this.status;
-          this.$http.post('http://localhost:8082/tbSeller/updTbSeller',this.tbSeller[0]).then(res=>{
+          this.$http.post(this.Global.url_8082+'tbSeller/updTbSeller',this.tbSeller[0]).then(res=>{
             if (res.data != null){
               this.$message({message: '修改成功!', type: 'success'});
+              this.$http.get(this.Global.url_8082+'tbSeller/findByStatus/0').then(res=>{
+                this.tableData = res.data;
+              });
             }else{
               this.$message({message: '修改失败!', type: 'warning'});
             }
+            this.showBol = false;
           })
         }
       }

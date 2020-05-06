@@ -7,18 +7,6 @@
         <img src="/static/img/avatar.png" style="height:30px;width: 30px;border-radius: 50%;">
         username<i class="el-icon-caret-bottom el-icon--right"></i>
       </el-menu-item>
-      <el-menu-item class="right" index="2">
-        <img src="/static/img/avatar.png" style="height:30px;width: 30px;border-radius: 50%;">
-        <el-badge :value="2" class="item" type="warning"></el-badge>
-      </el-menu-item>
-      <el-menu-item class="right" index="1">
-        <img src="/static/img/avatar.png" style="height:30px;width: 30px;border-radius: 50%;">
-        <el-badge :value="1" class="item" type="primary"></el-badge>
-      </el-menu-item>
-      <el-menu-item class="right" index="0">
-        <img src="/static/img/avatar.png" style="height:30px;width: 30px;border-radius: 50%;">
-        <el-badge :value="3" class="item"></el-badge>
-      </el-menu-item>
     </el-menu>
 
     <div v-show="isBol" class="downMenu">

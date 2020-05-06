@@ -4,8 +4,10 @@ import VueRouter from 'vue-router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import VueResource from 'vue-resource';
+import Global from "./components/util/Global";
 
 Vue.config.productionTip = false;
+Vue.prototype.Global = Global;
 Vue.use(ElementUI);
 Vue.use(VueResource);
 Vue.use(VueRouter);

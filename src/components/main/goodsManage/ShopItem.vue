@@ -96,11 +96,11 @@
           }
       },
       created() {
-        this.$http.get('http://localhost:8082/tbItemCat/getLevel/0/0/5').then(res => {
+        this.$http.get(this.Global.url_8082+'tbItemCat/getLevel/0/0/5').then(res => {
           this.oneTableData = res.data;
           this.id = res.data[0].parentId;
         });
-        this.$http.get('http://localhost:8082/tbItemCat/getCount/0').then(res => {
+        this.$http.get(this.Global.url_8082+'tbItemCat/getCount/0').then(res => {
           this.totalCount = res.data;
         });
       },
@@ -110,10 +110,10 @@
           this.getData(this.id);
         },
         getData(id){
-          this.$http.get("http://localhost:8082/tbItemCat/getLevel/"+id+"/"+((this.currentPage -1)*5)+"/5").then(res => {
+          this.$http.get(this.Global.url_8082+"tbItemCat/getLevel/"+id+"/"+((this.currentPage -1)*5)+"/5").then(res => {
             this.oneTableData = res.data;
           });
-          this.$http.get('http://localhost:8082/tbItemCat/getCount/'+id).then(res => {
+          this.$http.get(this.Global.url_8082+'tbItemCat/getCount/'+id).then(res => {
             this.totalCount = res.data;
           });
         },

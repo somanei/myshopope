@@ -110,14 +110,14 @@
           this.getData();
         },
         getData(){
-          this.$http.get('http://localhost:8082/brand/getAll',{params:{
+          this.$http.get(this.Global.url_8082+'brand/getAll',{params:{
               pageSize: this.pageSize,
               // 显示第几页
               curPage: (this.currentPage - 1) * this.pageSize
             }}).then(res=>{
             this.tableData = res.data;
           });
-          this.$http.get('http://localhost:8082/brand/getCount').then(res=>{
+          this.$http.get(this.Global.url_8082+'brand/getCount').then(res=>{
             this.totalCount = res.data;
           });
         },
@@ -125,7 +125,7 @@
           if (this.multipleSelection.length == 0){
             this.$message({message: '删除不得为空', type: 'warning'});
           }else{
-            this.$http.post('http://localhost:8082/brand/delBrand', this.multipleSelection).then(res=>{
+            this.$http.post(this.Global.url_8082+'brand/delBrand', this.multipleSelection).then(res=>{
               if (res.data == 1 ){
                 this.$message({message: '删除成功!', type: 'success'});
                 this.getData();
@@ -140,13 +140,13 @@
             this.$message({message: '不得为空!', type: 'warning'});
             return;
           }else{
-            this.$http.post('http://localhost:8082/brand/addBrand',{
+            this.$http.post(this.Global.url_8082+'brand/addBrand',{
               brandName:this.inputPp,brandFirst:this.inputSzm
             }).then(res=>{
               console.log(res)
               if (res.data == 1){
                 this.$message({message: '新增成功!', type: 'success'});
-                this.$http.get('http://localhost:8082/brand/getCount').then(res=>{
+                this.$http.get(this.Global.url_8082+'brand/getCount').then(res=>{
                   this.totalCount = res.data;
                 });
                 this.clear();
@@ -161,7 +161,7 @@
           if (this.pp == ""){
             this.$message({message: '不得为空', type: 'warning'});
           }else {
-            this.$http.post('http://localhost:8082/brand/updBrand', {
+            this.$http.post(this.Global.url_8082+'brand/updBrand', {
               brandName: this.pp, brandFirst: this.szm,brandId:this.brandId
             }).then(res => {
               console.log(res);

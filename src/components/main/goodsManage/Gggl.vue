@@ -117,14 +117,14 @@
         }
       },
       created() {
-        this.$http.get('http://localhost:8082/spec/getAll',{params:{
+        this.$http.get(this.Global.url_8082+'spec/getAll',{params:{
             pageSize: this.pageSize,
             // 显示第几页
             curPage: (this.currentPage - 1) * this.pageSize
           }}).then(res=>{
           this.tableData = res.data;
         });
-        this.$http.get('http://localhost:8082/spec/getCount').then(res=>{
+        this.$http.get(this.Global.url_8082+'spec/getCount').then(res=>{
           this.totalCount = res.data;
         });
       },
@@ -138,7 +138,7 @@
         },
         //搜索
         search(){
-          this.$http.post('http://localhost:8082/spec/search',{specName:this.inSearch}).then(res=>{
+          this.$http.post(this.Global.url_8082+'spec/search',{specName:this.inSearch}).then(res=>{
             this.totalCount = res.data.length;
             this.pageSize = res.data.length;
             this.tableData = res.data;
@@ -157,7 +157,7 @@
         },
         //修改触发
         handleEdit(index,row){
-          this.$http.get('http://localhost:8082/spec/getBySpecId',{params:{id:row.specId}}).then(res=>{
+          this.$http.get(this.Global.url_8082+'spec/getBySpecId',{params:{id:row.specId}}).then(res=>{
             this.dynamicValidateForm.email = row.specName;
             this.dynamicValidateForm.domains = res.data;
           });
@@ -178,14 +178,14 @@
         },
         //获取数据
         getData(){
-          this.$http.get('http://localhost:8082/spec/getAll',{params:{
+          this.$http.get(this.Global.url_8082+'spec/getAll',{params:{
               pageSize: this.pageSize,
               // 显示第几页
               curPage: (this.currentPage - 1) * this.pageSize
             }}).then(res=>{
             this.tableData = res.data;
           });
-          this.$http.get('http://localhost:8082/spec/getCount').then(res=>{
+          this.$http.get(this.Global.url_8082+'spec/getCount').then(res=>{
             this.totalCount = res.data;
           });
         },
@@ -194,7 +194,7 @@
           if (this.multipleSelection.length == 0){
             this.$message({message: '删除不得为空', type: 'warning'});
           }else{
-            this.$http.post('http://localhost:8082/spec/delSpec',this.multipleSelection).then(res=>{
+            this.$http.post(this.Global.url_8082+'spec/delSpec',this.multipleSelection).then(res=>{
               if (res.data >= 1){
                 this.$message({message: '删除成功!', type: 'success'});
               }else{
@@ -215,7 +215,7 @@
               return;
             }
           }
-          this.$http.post('http://localhost:8082/spec/addSpec',{
+          this.$http.post(this.Global.url_8082+'spec/addSpec',{
             specName:value.email,list:value.domains
           }).then(res=>{
             if (res.data == 1){
@@ -238,7 +238,7 @@
               return;
             }
           }
-          this.$http.post('http://localhost:8082/spec/updSpec',{
+          this.$http.post(this.Global.url_8082+'spec/updSpec',{
             specName:value.email,list:value.domains,specId:this.specId
           }).then(res=>{
             if (res.data == 1){
@@ -257,7 +257,7 @@
             this.$message({message: '删除成功!', type: 'success'});
             return;
           }
-          this.$http.post('http://localhost:8082/spec/delOptions',domain).then(res=>{
+          this.$http.post(this.Global.url_8082+'spec/delOptions',domain).then(res=>{
             if (res.data == 1){
               this.$message({message: '删除成功!', type: 'success'});
             }else{
