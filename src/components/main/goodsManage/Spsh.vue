@@ -2,11 +2,11 @@
     <div class="spsh">
       <h1>商品审核</h1>
       <el-button-group>
-        <el-button >刷新</el-button>
+        <el-button @click="reloadGet">刷新</el-button>
       </el-button-group>
       <div style="float: right">
         <span>商品名称:</span><el-input clearable v-model="inSearch" style="width: 200px;"></el-input>
-        <el-button>搜索</el-button>
+        <el-button @click="search">搜索</el-button>
       </div>
 
       <div>
@@ -21,8 +21,8 @@
             <el-table-column prop="auditStatus" label="状态" width="80" show-overflow-tooltip></el-table-column>
             <el-table-column prop="address" label="操作">
               <template slot-scope="scope">
-                <el-button class="b" type="primary" size="mini" @click="checkOk(scope.row)">审核通过</el-button>
-                <el-button class="b" type="danger" size="mini" @click="reject(scope.row)">驳回</el-button>
+                <el-button class="b" type="primary" size="mini" @click="checkOk(scope.row,scope.$index)">审核通过</el-button>
+                <el-button class="b" type="danger" size="mini" @click="reject(scope.row,scope.$index)">驳回</el-button>
               </template>
             </el-table-column>
         </el-table>
@@ -64,10 +64,6 @@
       },
       methods:{
         dataFormat: async function(r){
-          if (r.data.length === 0){
-            this.$message({message: '查询没有结果!', type: 'warning'});
-            return;
-          }
           for (let i = 0; i < r.data.length; i++) {
             if (r.data[i].auditStatus === '1'){
               r.data[i].auditStatus = '待审核';
@@ -99,12 +95,46 @@
           this.currentPage = val;
         },
         //审核通过
-        checkOk(){
-
+        checkOk(row,index){
+          this.$http.get(this.Global.url_8082+"util/updStat/"+row.id+"/0").then(r=>{
+            if(r.data == "1"){
+              this.$message({message: '通过成功!', type: 'success'});
+              this.tableData.splice(index,1);
+            }else{
+              this.$message({message: '通过失败!', type: 'warning'});
+            }
+          })
         },
         //驳回
-        reject(){
-
+        reject(row,index){
+          this.$http.get(this.Global.url_8082+"util/updStat/"+row.id+"/3").then(r=>{
+            if(r.data == "1"){
+              this.$message({message: '驳回成功!', type: 'success'});
+              this.tableData.splice(index,1);
+            }else{
+              this.$message({message: '驳回失败!', type: 'warning'});
+            }
+          })
+        },
+        //搜索
+        search(){
+          if (this.inSearch === ""){
+            this.reloadGet();
+          }else{
+            this.$http.get(this.Global.url_8082+'util/search/'+this.inSearch).then(r=>{
+              if (r.data.length === 0){
+                this.$message({message: '查询没有结果!', type: 'warning'});
+                return;
+              }
+              this.dataFormat(r);
+            })
+          }
+        },
+        //刷新
+        reloadGet(){
+          this.$http.get(this.Global.url_8082+'util/getGoods').then(r=>{
+            this.dataFormat(r)
+          })
         }
       }
     }

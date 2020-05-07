@@ -1,6 +1,7 @@
 <template>
     <div class="sjsh">
       <h1>商家审核</h1>
+      <el-button @click="reGet">刷新</el-button>
       <div style="float: right;">
         公司名称:<el-input v-model="input" placeholder="请输入内容" style="width: 200px;margin-right: 15px;"></el-input>
         店铺名称:<el-input v-model="input" placeholder="请输入内容" style="width: 200px;"></el-input>
@@ -92,6 +93,11 @@
         });
       },
       methods:{
+        reGet(){
+          this.$http.get(this.Global.url_8082+'tbSeller/findByStatus/0').then(res=>{
+            this.tableData = res.data;
+          });
+        },
         handleEdit(index,row){
           this.tbSeller[0] = row;
           this.showBol = true;

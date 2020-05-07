@@ -15,8 +15,7 @@
     </el-breadcrumb>
     <el-button-group>
       <el-button @click="dialogVisible = true">新建</el-button>
-      <el-button @click="delCat()">删除</el-button>
-      <el-button>刷新</el-button>
+      <el-button @click="reGet">刷新</el-button>
     </el-button-group>
 
     <el-table :data="tableData" border @selection-change="handleSelectionChange" style="width: 100%">
@@ -149,6 +148,23 @@
       })
     },
     methods: {
+      reGet(){
+        this.currentPage = 1;
+        this.pageSize = 5;
+        this.tbItemCatName = "";
+        this.threeName = '';
+        this.count = 1;
+        this.$http.get(this.Global.url_8082+'tbItemCat/getLevel/0/0/5').then(res => {
+          this.tableData = res.data;
+          this.tbItemCatId = res.data[0].parentId;
+        });
+        this.$http.get(this.Global.url_8082+'tbItemCat/getCount/0').then(res => {
+          this.totalCount = res.data;
+        });
+        this.$http.get(this.Global.url_8082+'template/getIdAndName').then(res=>{
+          this.options = res.data;
+        })
+      },
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },

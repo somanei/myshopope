@@ -4,7 +4,6 @@
       <!--头部按钮-->
       <el-button-group>
         <el-button @click="dialogVisible = true,clear()">新建</el-button>
-        <el-button @click="delSpec">删除</el-button>
         <el-button @click="reload()">刷新</el-button>
       </el-button-group>
       <!--搜索组件-->
@@ -277,7 +276,18 @@
         },
         //刷新
         reload(){
-          window.location.reload();
+          this.currentPage = 1;
+          this.pageSize = 5;
+          this.$http.get(this.Global.url_8082+'spec/getAll',{params:{
+              pageSize: this.pageSize,
+              // 显示第几页
+              curPage: (this.currentPage - 1) * this.pageSize
+            }}).then(res=>{
+            this.tableData = res.data;
+          });
+          this.$http.get(this.Global.url_8082+'spec/getCount').then(res=>{
+            this.totalCount = res.data;
+          });
         }
       }
     }

@@ -3,8 +3,8 @@
       <h1>品牌管理</h1>
       <el-button-group>
         <el-button @click="dialogVisible = true">新建</el-button>
-        <el-button @click="delBrand">删除</el-button>
-        <el-button >刷新</el-button>
+<!--        <el-button @click="delBrand">删除</el-button>-->
+        <el-button @click="reGet">刷新</el-button>
       </el-button-group>
 
       <el-table :data="tableData" border @selection-change="handleSelectionChange" style="width: 100%">
@@ -89,6 +89,15 @@
         })
       },
       methods:{
+        reGet(){
+          this.$http.get(this.Global.url_8082+'brand/getAll?curPage=0&pageSize=5').then(res=>{
+            this.tableData = res.data;
+          });
+          this.$http.get(this.Global.url_8082+'brand/getCount').then(res=>{
+            this.totalCount = res.data;
+          })
+          this.currentPage = 1;
+        },
         handleSelectionChange(val) {
           this.multipleSelection = val;
         },

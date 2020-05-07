@@ -12,7 +12,7 @@
             </div>
 
             <div style="display: inline-block;margin-left: 20px;color: white;">
-              <span>username</span><br>
+              <span>{{name}}</span><br>
               <span>在线</span>
             </div>
           </div>
@@ -76,9 +76,14 @@
   export default {
     name: 'LeftNav',
     data() {
-      return {}
+      return {
+        name:''
+      }
     },
-    methods: {}
+    methods: {},
+    created() {
+      this.name = sessionStorage.getItem("loginName");
+    }
   }
 </script>
 

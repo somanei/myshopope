@@ -3,7 +3,6 @@
       <h1>模板管理</h1>
       <el-button-group>
         <el-button @click="dialogVisible = true,clear()">新建</el-button>
-        <el-button @click="delTemplate()">删除</el-button>
         <el-button @click="reload()">刷新</el-button>
       </el-button-group>
       <div style="float: right">
@@ -291,7 +290,9 @@
         },
         //刷新按钮触发
         reload(){
-          window.location.reload();
+          this.currentPage = 1;
+          this.pageSize = 5;
+          this.getData();
         },
         //删除模板触发
         delTemplate(){
