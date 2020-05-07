@@ -1,7 +1,10 @@
 <template>
   <div id="app">
 
-    <div id="main">
+    <div v-if="!showBol">
+      <ShopLogin @loginOk="loginOk"></ShopLogin>
+    </div>
+    <div id="main" v-if="showBol">
       <Fixed></Fixed>
       <router-view></router-view>
     </div>
@@ -10,9 +13,29 @@
 
 <script>
   import Fixed from "./components/util/Fixed";
+  import ShopLogin from "./components/login/ShopLogin";
 export default {
   name: 'App',
-  components:{Fixed}
+  components:{Fixed,ShopLogin},
+  data(){
+    return{
+      showBol:false
+    }
+  },
+  created() {
+    const bol = sessionStorage.getItem("loginBol");
+    if (bol != null){
+      this.showBol = true;
+    }
+  },
+  methods:{
+    loginOk(val){
+      this.showBol = val;
+      if (val){
+        sessionStorage.setItem("loginBol",'true');
+      }
+    }
+  }
 }
 </script>
 

@@ -64,20 +64,6 @@
           </el-menu-item-group>
         </el-submenu>
 
-        <!--<el-submenu index="4">
-          <template slot="title">
-            <i class="el-icon-location"></i>
-            <span>广告管理</span>
-          </template>
-          <el-menu-item-group>
-            <router-link to="/gglxgl">
-              <el-menu-item index="3-1">广告类型管理</el-menu-item>
-            </router-link>
-            <router-link to="/acGggl">
-              <el-menu-item index="3-2">广告管理</el-menu-item>
-            </router-link>
-          </el-menu-item-group>
-        </el-submenu>-->
 
 
       </el-menu>
